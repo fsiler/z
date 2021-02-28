@@ -1,13 +1,14 @@
 function normcdf(x, mean = 0.0, sd = 1.0) {
   // implementation of ZKERCOOK algorithm from Brophy and Wood, 1989.
   const z = (x - mean) / sd;
+  let p1 = 0.0;
   if(Math.abs(z) > 6.8) {
     const zz = z * z;
     const w  = 1.0 - 1.0 / (zz + 3.0 - 1. / (0.22 * zz + 0.704));
     p1 = 1 / Math.sqrt(2.0 * Math.PI) * Math.exp(-zz / 2.0) * w / z;
     if(Math.sign(z) === -1) { p1 = 1.0 - p1; }
   } else {
-    let i = 2, p = 1.0, p1 = 0.0, t = 1.0, t1 = z*z / 4.0, z1 = t1;
+    let i = 2, p = 1.0, t = 1.0, t1 = 0.25 * z*z, z1 = t1;
     while(true)
     {
       t = z1 * (t1 - t) / i;
