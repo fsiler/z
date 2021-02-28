@@ -1,14 +1,12 @@
-/*eslint no-constant-condition: ["error", { "checkLoops": false }]*/
-"use strict";
-function normcdf(z, mean = 0.0, sd = 1.0) {
+function normcdf(x, mean = 0.0, sd = 1.0) {
   // implementation of ZKERCOOK algorithm from Brophy and Wood, 1989.
-  const x = (z - mean) / sd;
-  let i = 2, p = 1.0, p1 = 0.0, t = 1.0, t1 = x*x/4.0, z1 = t1;
-  if(Math.abs(x) > 6.8) {
-    const zz = x * x;
+  const z = (x - mean) / sd;
+  let i = 2, p = 1.0, p1 = 0.0, t = 1.0, t1 = z * z / 4.0, z1 = t1;
+  if(Math.abs(z) > 6.8) {
+    const zz = z * z;
     const w  = 1.0 - 1.0 / (zz + 3.0 - 1. / (0.22 * zz + 0.704));
-    p1 = 1 / Math.sqrt(2.0 * Math.PI) * Math.exp(-zz / 2.0) * w / x;
-    if(Math.sign(x) === -1) { p1 = 1 - p1; }
+    p1 = 1 / Math.sqrt(2.0 * Math.PI) * Math.exp(-zz / 2.0) * w / z;
+    if(Math.sign(z) === -1) { p1 = 1 - p1; }
   } else {
     while(true)
     {
@@ -22,15 +20,15 @@ function normcdf(z, mean = 0.0, sd = 1.0) {
       i++;
       p1 = p;
     }
-    p = 1 / Math.sqrt(2.0 * Math.PI) * x * Math.exp(-z1 / 2.0) * p;
+    p = 1 / Math.sqrt(2.0 * Math.PI) * z * Math.exp(-z1 / 2.0) * p;
     p1 = 0.5 - p;
   }
   return 1.0 - p1
 }
 
-function erf(z) {
+function erf(x) {
   // https://stats.stackexchange.com/a/187909/311838
-  return 2.0 * normcdf(z * Math.sqrt(2)) - 1;
+  return 2.0 * normcdf(x * Math.sqrt(2)) - 1;
 }
 
 function normpdf(x, mean = 0.0, sd = 1.0) {
