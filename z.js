@@ -9,8 +9,7 @@ function normcdf(x, mean = 0.0, sd = 1.0) {
     if(Math.sign(z) === -1) { p1 = 1.0 - p1; }
   } else {
     let i = 2, p = 1.0, t = 1.0, t1 = 0.25 * z*z, z1 = t1;
-    while(true)
-    {
+    while(true) {
       t = z1 * (t1 - t) / i;
       i++;
       p = p + t / i;
@@ -21,7 +20,7 @@ function normcdf(x, mean = 0.0, sd = 1.0) {
       i++;
       p1 = p;
     }
-    p = 1.0 / Math.sqrt(2.0 * Math.PI) * z * Math.exp(-z1 / 2.0) * p;
+    p = p / Math.sqrt(2.0 * Math.PI) * z * Math.exp(-z1 / 2.0);
     p1 = 0.5 - p;
   }
   return 1.0 - p1
@@ -41,7 +40,7 @@ function tcdf(x, v) {
   if(!Number.isInteger(v) || v < 1) { return null; }
   if(v >= 30) { return normcdf(x); }
   if(v == 1) { return 0.5 + 1.0 / Math.PI * Math.atan(x); }
-  if(v == 2) { return 0.5 + x / (2.0 * Math.sqrt(2 + x*x)); }
-  const l = (4.0 * v + x*x - 1.0)/(4.0 * v + 2.0*x*x);
+  if(v == 2) { return 0.5 + x / (2.0 * Math.sqrt(2.0 + x*x)); }
+  const l = (4.0 * v + x*x - 1.0)/(4.0 * v + 2.0 * x*x);
   return normcdf(x * l);
 }
